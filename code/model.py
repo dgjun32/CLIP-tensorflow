@@ -127,6 +127,8 @@ class CLIPModel(tf.keras.Model):
             self.image_encoder = VisionTransformer(num_heads=16, n_layers=24, h_dim=1024, m_dim=4096, patch_size=14)
         # text encoder
         self.text_encoder = TextTransformer(num_heads=12, n_layers=12, vocab_size=30000, context_size=77, h_dim=512, m_dim=2048)
+        self.image_proj = layers.Dense(512, activation='linear')
+        self.text_proj = layers.Dense(512, activation='linear')
     
     def encode_text(self, tokens):
         out = self.text_encoder(tokens)
@@ -137,9 +139,16 @@ class CLIPModel(tf.keras.Model):
         return out
 
     def forward(self, image, text):
-        img_features = self.encode_image(image)
-        text_features = self.encode_text(text)
-
-        img_features = tf.keras.utils.normalize(img_features, axis=-1)
+        '''
+        image : torch.FloatTensor of shape (batch_size, 3, 224, 224)
+        text : Dictionary of torch.LongTensor, torch.BoolTensor of shape (batch_size, 77)
+        '''
+        image_features = self.image_proj(self.encode_image(image))
+        text_features = self.text_proj(self.encode_text(text))
+        image_features = tf.keras.utils.normalize(image_features, axis=-1)
         text_features = tf.keras.utils.normalize(text_features, axis=-1)
 
+        image_logits = image_features @ tf.transpose(text_features)
+        text_logits = tf.transpose(image_logits)
+
+        return image_logits, text_logits, 
