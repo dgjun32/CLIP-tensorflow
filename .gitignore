@@ -1,4 +1,8 @@
-data/
+data/annotations/
+data/test2017/
+data/train2017/
+data/val2017/
 code/test.ipynb
-code/__pycache__
-code/.ipynb_checkpoints
+code/__pycache__/
+code/.ipynb_checkpoints/
+__pycache__/
