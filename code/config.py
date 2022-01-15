@@ -11,6 +11,8 @@ cfg.path.train_annot = "../data/annotations/captions_train2017.json"
 cfg.path.val_annot = "../data/annotations/captions_val2017.json"
 
 cfg.train = edict()
-cfg.train.temperature = 
+cfg.train.img_size = 224
+
+
 
 
