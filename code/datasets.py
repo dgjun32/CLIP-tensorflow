@@ -9,10 +9,10 @@ import tensorflow as tf
 
 # load normalized images and text caption
 class DataLoader(tf.keras.utils.Sequence):
-    def __init__(self, cfg, batch_size = 32768):
+    def __init__(self, cfg):
         super(DataLoader, self).__init__()
         self.cfg = cfg
-        self.batch_size = batch_size
+        self.batch_size = cfg.train.batch_size
         with open(cfg.path.train_annot) as f:
             self.train_annot = json.load(f)
         self._to_dataframe()
