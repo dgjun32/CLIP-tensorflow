@@ -13,7 +13,7 @@ cfg.path.val_annot = "../data/annotations/captions_val2017.json"
 cfg.train = edict()
 cfg.train.img_size = 224
 cfg.train.num_epochs = 32
-cfg.train.batch_size = 32678
+cfg.train.batch_size = 32
 
 
 
