@@ -9,7 +9,7 @@
 ## 2. Approach
 CLIP (Contrastive Language-Image Pre-Training) is a neural network trained on a variety of (image, text) pairs. It can be instructed in natural language to predict the most relevant text snippet, given an image.
 
-<img src = 'tensorflow_clip/imgs/overview-a.svg'>
+<img src = 'imgs/overview-a.png'>
 
 I used ```MS-COCO dataset```, which contains 118K image-caption pairs, as ```WIT dataset``` is too large to run on my local machine.
 
@@ -58,7 +58,7 @@ In this demo, query consists of single image and text. By using the sum of repre
 <img src = 'imgs/7116d0d6-795e-46f8-bf2a-4db850171c27.png'><br>
 
 <p><img src = 'imgs/c6b2e7e1-10ba-4cfd-85a9-8bfe18d5df15.png'>
-    <img src = 'mgs/ed2d3d54-c595-4886-baab-d1f0a63b26c6.png'></p>
+    <img src = 'imgs/ed2d3d54-c595-4886-baab-d1f0a63b26c6.png'></p>
 
     
 
