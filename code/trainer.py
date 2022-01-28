@@ -3,7 +3,7 @@ import numpy as np
 import tensorflow as tf
 
 from config import cfg
-from datasets import DataLoader, prepare_data
+from datasets import PairDataLoader, prepare_data
 
 
 class Trainer:
@@ -14,7 +14,7 @@ class Trainer:
         self.temperature = tf.Variable(0.07, trainable=True)
     def train(self):
         # set dataloader & optimizer 
-        dataloader = DataLoader(self.cfg)
+        dataloader = PairDataLoader(self.cfg)
         optimizer = tf.keras.optimizers.Adam()
         for epoch in range(self.cfg.train.num_epochs):
             print('-'*50)

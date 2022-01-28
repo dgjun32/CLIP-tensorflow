@@ -11,18 +11,27 @@ CLIP (Contrastive Language-Image Pre-Training) is a neural network trained on a 
 
 https://github.com/openai/CLIP/blob/main/CLIP.png
 
-I used ```MS-COCO dataset```, which contains image-caption pairs, as ```WIT dataset``` is not open source and I had limited computing resources.
+I used ```MS-COCO dataset```, which contains image-caption pairs, as ```WIT dataset``` is too large to run on my local machine.
+
+If you want to run with ```WIT dataset```, you may use ```tfds API``` using code below.
+    ```
+    import tensorflow_datasets as tfds
+    dataset = tfds.load(name='wit', split='train')
+    ```
 
 ## 3. Dataset
 * Download 2017 version dataset from the [link]('https://cocodataset.org/#download')
 * Save each sub directory in ```../data``` dir as below. 
     ```
-    -data |-- train2017
-        |-- test2017
-        |-- val2017
-        |-- annotations
+    - data|-- train2017
+          |-- test2017
+          |-- val2017
+          |-- annotations
     ```
 
 ## 4. Training
 * change current directory : ```$ cd code```
 * train start : ```$ python main.py --model_name (one of [vit-B/32, vit-B/16, vit-L/14])```
+
+## 5. Demo
+

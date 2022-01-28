@@ -6,3 +6,4 @@ code/test.ipynb
 code/__pycache__/
 code/.ipynb_checkpoints/
 __pycache__/
+code/coco_img_embs.pt

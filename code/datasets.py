@@ -8,9 +8,9 @@ import tensorflow as tf
 
 
 # load normalized images and text caption
-class DataLoader(tf.keras.utils.Sequence):
+class PairDataLoader(tf.keras.utils.Sequence):
     def __init__(self, cfg):
-        super(DataLoader, self).__init__()
+        super(PairDataLoader, self).__init__()
         self.cfg = cfg
         self.batch_size = cfg.train.batch_size
         with open(cfg.path.train_annot) as f:
@@ -66,3 +66,50 @@ def prepare_data(batch, tokenizer):
     attn_mask = tf.matmul(tf.expand_dims(attn_mask, 2), tf.transpose(tf.expand_dims(attn_mask, 2), perm=(0,2,1)))
     return pixel, tokens['input_ids'], attn_mask
         
+
+class ImageDataLoader(tf.keras.utils.Sequence):
+    def __init__(self, batch_size, img_dir, annot_dir):
+        '''
+        img_dir : directory containing images
+        annot_dir : .json file path containing annotation
+        '''
+        super(ImageDataLoader, self).__init__()
+        self.batch_size = batch_size
+        self.img_dir = img_dir
+        self.annot_dir = annot_dir
+        with open(annot_dir) as f:
+            self.annot = json.load(f)
+        self._to_dataframe()
+        self.indices = np.arange(len(self.df))
+
+    def _to_dataframe(self):
+        # for train dataset
+        images = self.annot['images']
+        image_ids, image_paths = [], []
+        for sample in images:
+            image_ids.append(sample['id'])
+            image_paths.append(os.path.join(self.img_dir, sample['file_name']))
+        self.df = pd.DataFrame({'id':image_ids, 'image_path':image_paths})
+    
+    def return_df(self):
+        return self.df
+    
+    def _img_preprocess(self, img_path):
+        proc = tf.keras.Sequential([
+            tf.keras.layers.Resizing(224, 224),
+            tf.keras.layers.Rescaling(scale=1./127.5, offset=-1)
+        ])
+        img = tf.keras.utils.load_img(img_path)
+        img = tf.keras.utils.img_to_array(img)
+        img = tf.constant(img)
+        img_tensor = proc(img)
+        return img_tensor
+
+    def __len__(self):
+        return int(len(self.df)//self.batch_size)
+
+    def __getitem__(self, index):
+        indices = self.indices[index*self.batch_size:(index+1)*self.batch_size]
+        images = np.array([self._img_preprocess(self.df.image_path[i]) for i in indices])
+        return tf.convert_to_tensor(images, dtype=tf.float32)
+
