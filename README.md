@@ -14,8 +14,10 @@ CLIP (Contrastive Language-Image Pre-Training) is a neural network trained on a 
 I used ```MS-COCO dataset```, which contains 118K image-caption pairs, as ```WIT dataset``` is too large to run on my local machine.
 
 If you want to run with ```WIT dataset```, you may use ```tfds API``` using code below.
+    
     ```
     import tensorflow_datasets as tfds
+    
     dataset = tfds.load(name='wit', split='train')
     ```
 
